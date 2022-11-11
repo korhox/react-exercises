@@ -1,10 +1,13 @@
-import CharacterBoard from './CharacterBoard';
+import CharacterBoardComponent from './CharacterBoardComponent';
 import './App.css';
+import React from 'react';
 
-function App() {
-  return (
-    <CharacterBoard width={7} height={5} />
-  );
+class App extends React.Component {
+  render() {
+    return (<>
+      <CharacterBoardComponent width={7} height={5} alt={false} />
+    </>);
+  }
 }
 
 export default App;
