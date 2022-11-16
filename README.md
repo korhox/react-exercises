@@ -26,19 +26,32 @@ This repository contains my solutions to the exercises given on the course. Plea
 .
 ├── README.md
 ├── e1
-│   ├── README.md
-│   ├── node_modules
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── public
-│   └── src
+│   ├── README.md
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   └── src
 ├── e2
-│   ├── [exercise files]
-│   .
-├── e*
-│   ├── [exercise files]
-│   .
-.
+│   ├── README.md
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   ├── src
+│   │   ├── App.css
+│   │   ├── App.jsx
+│   │   ├── assets
+│   │   ├── contacts.jsx
+│   │   ├── error-page.jsx
+│   │   ├── index.css
+│   │   ├── main.jsx
+│   │   └── routes
+│   │       ├── contact.jsx
+│   │       ├── destroy.jsx
+│   │       ├── edit.jsx
+│   │       ├── index.jsx
+│   │       └── root.jsx
+│   └── vite.config.js
+└── project
+    └── [project work files]
 ```
-<br>
-  \*=counting down the exercise numbers*
