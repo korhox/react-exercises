@@ -5,16 +5,11 @@ This repository contains my solutions to the exercises given on the course. Plea
 
 # Course
 
-**ID:** 4A00EZ61
-
-**Group:** 21TIKOOT1
-
-**Group ID:** 3005
-
-**Name:** Frontend Development
-
-**Module name:** React
-
+**ID:** 4A00EZ61<br>
+**Group:** 21TIKOOT1<br>
+**Group ID:** 3005<br>
+**Name:** Frontend Development<br>
+**Module name:** React<br>
 **Lecturer:** Teemu Hirsimäki *[@Applied Sciences of Tampere(TAMK)](https://www.tuni.fi/en/about-us/tamk)*
 
 
