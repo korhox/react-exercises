@@ -6,7 +6,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "viol": "#542087"
+        "viol": "#542087",
+        "viol-dark": "#13071E"
       }
     },
   },
