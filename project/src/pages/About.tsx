@@ -68,6 +68,7 @@ const DepedencyList: Depedencies = {
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     typescript: "^4.9.3",
+    uuid: "^9.0.0",
     "@types/react-router-dom": "^5.3.3",
     autoprefixer: "^10.4.13",
     postcss: "^8.4.19",
