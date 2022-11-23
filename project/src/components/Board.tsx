@@ -1,5 +1,5 @@
 import Issue from "./Issue";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 
 const Board = () => (
@@ -12,7 +12,7 @@ const Board = () => (
         <Issue />
         <div className="flex items-center mb-2 bg-neutral-100/80 shadow">
             <span className="pl-2 pr-1">
-                <FontAwesomeIcon icon={faPlus} size={24} color="#00000088" />
+                <FontAwesomeIcon icon={faPlus} size="xl" color="#00000088" />
             </span>
             <input className="p-2 bg-transparent flex-1" placeholder="New Issue..."></input>
         </div>
