@@ -3,7 +3,10 @@ import { NavLink } from "react-router-dom";
 
 const About = () => (
     <header className="bg-viol text-white shadow-2xl pl-2">
-        <nav className="flex container mx-auto">
+        <nav className="flex container mx-auto items-center">
+            <NavLink to="/" className="p-5 pl-0 pr-10">
+                <img src="/assets/img/logo-neg.svg" alt="eezeePlan" width="200px" />
+            </NavLink>
             <LinkContainer to="/" label="Home" />
             <LinkContainer to="/settings" label="Settings" />
             <LinkContainer to="/about" label="About" />
