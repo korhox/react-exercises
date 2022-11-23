@@ -1,4 +1,4 @@
-import Board from "../components/Board";
+import BoardComponent from "../components/BoardComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 
@@ -12,9 +12,9 @@ const Index = () => (
             </button>
         </div>
         <div className="flex justify-center overflow-x-auto">
-            <Board />
-            <Board />
-            <Board />
+            <BoardComponent />
+            <BoardComponent />
+            <BoardComponent />
             <button className="bg-white/10 w-1/6 p-2 m-3 rounded-lg flex justify-center items-center shadow-md opacity-70 hover:opacity-100 transition-all ease-in-out duration-200">
                 <FontAwesomeIcon icon={faPlus} size="6x" color="#00000088" />
             </button>
