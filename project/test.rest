@@ -1,0 +1,5 @@
+GET http://localhost:3010/boards?projectId=2&_embed=issues
+
+###
+
+DELETE http://localhost:3010/boards/2
