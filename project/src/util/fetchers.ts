@@ -4,6 +4,9 @@ export interface Project {
     name: string;
     id: string;
     boards?: string[];
+    settings?: {
+        background: string;
+    };
 }
 export interface Board {
     name: string;

@@ -23,7 +23,7 @@ const Sidebar = () => {
     ) : isLoading ? (
         <p>Loading...</p>
     ) : (
-        <header className="relative z-10 bg-neutral-400/30 pt-2 text-white shadow-2xl backdrop-blur" style={{ height: '100%' }}>
+        <header className="relative z-10 bg-white/30 pt-2 text-white backdrop-blur" style={{ height: '100%', boxShadow: '0 0 20px #0002' }}>
             <nav className="container mx-auto flex flex-col items-center justify-between" style={{ height: '100%' }}>
                 <div>
                     <LinkContainer to="/" label="Home" icon={faHouse} />
