@@ -3,7 +3,7 @@ const Settings = () => {
     return (
         <>
             <div className="container mx-auto mt-8 mb-4 flex justify-between p-2">
-                <h2 className="text-2xl">Settings</h2>
+                <h2 className="text-3xl font-bold">Settings</h2>
             </div>
         </>
     );
