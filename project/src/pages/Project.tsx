@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { DebounceInput } from 'react-debounce-input';
 import { capitalizeWord } from '../util/utils';
+import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 
 const Project = () => {
     const params = useParams<{ id: string }>();
@@ -51,11 +52,22 @@ const Project = () => {
         <>
             <div className="w-full">
                 <div className="flex w-full justify-between p-5 pb-1">
-                    <div>
-                        <DebounceInput onChange={(e) => changeProjectName(e.target.value)} forceNotifyOnBlur debounceTimeout={500} minLength={2} value={capitalizeWord(curProject?.name ?? 'Unknown')} className="rounded-lg bg-neutral-400/50 py-2 px-3 text-2xl font-medium text-white shadow-lg backdrop-blur text-shadow-md" />
-                        <button onClick={delProject} className="ml-2 rounded bg-white px-5 py-2">
-                            Delete
-                        </button>
+                    <div className="flex items-center">
+                        <DebounceInput onChange={(e) => changeProjectName(e.target.value)} forceNotifyOnBlur debounceTimeout={500} minLength={2} value={capitalizeWord(curProject?.name ?? 'Unknown')} className="w-auto rounded-lg border-0 bg-transparent py-2 px-3 text-2xl font-medium text-white text-shadow-lg" />
+                        <div className="group relative ml-2 flex flex-col items-center px-5 py-2">
+                            <FontAwesomeIcon icon={faTrash} className="text-2xl text-white" />
+                            <div className="group absolute top-0 mt-8 hidden flex-col items-center group-hover:flex">
+                                <div className="-mb-2 h-3 w-3 rotate-45 rounded bg-white"></div>
+                                <span className="whitespace-no-wrap relative z-10 rounded bg-white p-3 text-xs leading-none text-black shadow" style={{ width: '250px' }}>
+                                    <strong>Permanently Remove the Project?</strong>
+                                    <br />
+                                    All the boards and issues attached to the project will be permanently removed.
+                                    <button onClick={delProject} className="mt-2 rounded bg-red-800 py-1 px-2 text-white">
+                                        Delete
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <div>
                         <p></p>
