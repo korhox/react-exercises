@@ -2,7 +2,7 @@ import IssueComponent from './IssueComponent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { FC, useCallback, useRef, useState } from 'react';
-import { Board, deleteAPI, insertAPI, Issue, updateAPI } from '../util/fetchers';
+import { Board, deleteAPI, insertAPI, Issue, updateAPI, updateOrder } from '../util/fetchers';
 import useSWR, { useSWRConfig } from 'swr';
 import { DebounceInput } from 'react-debounce-input';
 import { capitalizeWord } from '../util/utils';
@@ -34,8 +34,8 @@ const BoardComponent: FC<{ id: string; title: string; issues: Issue[] }> = ({ id
 
     const board = useRef<HTMLDivElement>(null);
     const moveIssue = useCallback(
-        (e: React.DragEvent<HTMLDivElement>) => {
-            const issueId = e.dataTransfer.getData('text/plain');
+        async (e: React.DragEvent<HTMLDivElement>) => {
+            const [issueId, fromBoardId] = e.dataTransfer.getData('text/plain').split('-');
             let position = 0;
             let distance = Infinity;
             board.current?.childNodes.forEach((child) => {
@@ -45,13 +45,14 @@ const BoardComponent: FC<{ id: string; title: string; issues: Issue[] }> = ({ id
                 const fromTop = Math.abs(e.clientY - rect.top);
                 const fromBottom = Math.abs(e.clientY - rect.bottom);
                 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                fromBottom > fromTop && fromBottom < distance && ((distance = fromTop), (position = parseInt(child.getAttribute('data-order') ?? '0') + 1));
+                fromBottom > fromTop && fromTop < distance && ((distance = fromTop), (position = parseInt(child.getAttribute('data-order') ?? '0')));
                 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                fromTop > fromBottom && fromTop < distance && ((distance = fromBottom), (position = parseInt(child.getAttribute('data-order') ?? '0')));
+                fromTop > fromBottom && fromBottom < distance && ((distance = fromBottom), (position = parseInt(child.getAttribute('data-order') ?? '0') + 1));
             });
-            console.log(position);
+            await updateOrder(issueId, position, fromBoardId, id);
+            mutate('/boards/');
         },
-        [board]
+        [id, mutate]
     );
 
     return (

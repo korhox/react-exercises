@@ -73,6 +73,16 @@ export const updateAPI = async <T>(slug: string, data: any) => {
     return result;
 };
 
+export const updateOrder = async (id: string, order: number, from: string, to: string) => {
+    const increments = await fetcher<Issue[]>(`/issues?boardId=${to}&order_gte=${order}`);
+    const decrements = from === to ? await fetcher<Issue[]>(`/issues?boardId=${from}&order_gte=${order}`) : [];
+    const promises = [];
+    increments.forEach((issue) => promises.push(updateAPI<Issue>(`/issues/${issue.id}`, { order: issue.order + 1 })));
+    decrements.forEach((issue) => promises.push(updateAPI<Issue>(`/issues/${issue.id}`, { order: issue.order - 1 })));
+    promises.push(updateAPI<Issue>(`/issues/${id}`, { order, boardId: to }));
+    await Promise.all(promises);
+};
+
 export const deleteAPI = async <T>(slug: string, updateSlug: string) => {
     const res = await fetch(`${baseUrl}${slug}`, {
         method: 'DELETE',

@@ -1,4 +1,4 @@
-import { FC, useContext, useState } from 'react';
+import { FC, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons/faPlay';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
@@ -16,7 +16,7 @@ const IssueComponent: FC<{ issue: Issue }> = ({ issue }) => {
     const modal = useContext(modalContext);
     return (
         <>
-            <div draggable data-order={issue.order} className="group relative mb-2 flex w-full rounded bg-white/70 p-2 text-left shadow transition-all duration-200 ease-in-out hover:bg-white hover:shadow-lg" id={'issue-' + issue.id}>
+            <div draggable onDragStart={(e) => e.dataTransfer.setData('text/plain', `${issue.id}-${issue.boardId}`)} data-order={issue.order} className="group relative mb-2 flex w-full rounded bg-white/70 p-2 text-left shadow transition-all duration-200 ease-in-out hover:bg-white hover:shadow-lg" id={'issue-' + issue.id}>
                 <div>
                     <h4 className="text-xl">{issue.title}</h4>
                 </div>
