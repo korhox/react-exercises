@@ -15,8 +15,10 @@ export interface Board {
     issues: Issue[];
 }
 export interface Issue {
-    content: string;
     id: string;
+    title: string;
+    description: string;
+    order: number;
     boardId: string;
 }
 
@@ -29,7 +31,7 @@ export const useProjects = () => {
 
 export const useBoards = (id: string) => {
     const { data, error } = useSWR<Board[], Error>(`/boards/`, async () => await fetcher<Board[]>(`/boards?projectId=${id}&_embed=issues`));
-    return { boards: data, isLoading: !error && !data, isError: error };
+    return { boards: data?.map((board) => ({ ...board, issues: board.issues.sort((a, b) => a.order - b.order) })), isLoading: !error && !data, isError: error };
 };
 
 const fetcher = async <T>(slug: string) => {
