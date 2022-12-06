@@ -8,6 +8,7 @@ import { useSWRConfig } from 'swr';
 import { DebounceInput } from 'react-debounce-input';
 import { capitalizeWord } from '../util/utils';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const Project = () => {
     const params = useParams<{ id: string }>();
@@ -44,6 +45,8 @@ const Project = () => {
         mutate('/boards/', [...(boards ?? []), await insertAPI('/boards', { name: `Board ${largest + 1}`, projectId: params.id ?? '' })], { optimisticData: [...(boards ?? []), tmpBoard] });
     }, [boards, mutate, params.id]);
 
+    const [query, setQuery] = useState('');
+
     return isError ? (
         <p>An unexpected error occurred.</p>
     ) : isLoading ? (
@@ -68,6 +71,10 @@ const Project = () => {
                                 </span>
                             </div>
                         </div>
+                        <div className="group relative ml-2 flex flex-row items-center px-5 py-2">
+                            <FontAwesomeIcon icon={faSearch} className="text-2xl text-white" />
+                            <DebounceInput onChange={(e) => setQuery(e.target.value)} debounceTimeout={300} className="bg-white" style={{ width: '250px' }} />
+                        </div>
                     </div>
                     <div>
                         <p></p>
@@ -80,12 +87,17 @@ const Project = () => {
                     </div>
                 </div>
                 <div className="flex items-start justify-center overflow-x-auto p-3">
-                    {boards?.map((board) => (
-                        <BoardComponent key={board.id} id={board.id} title={board.name} issues={board.issues ?? []} />
-                    ))}
-                    <button onClick={addBoard} className="m-3 flex w-full items-center justify-center rounded-lg bg-white/30 p-2 opacity-70 shadow-md transition-all duration-200 ease-in-out hover:scale-105 hover:opacity-100 hover:shadow-lg" style={{ minHeight: '200px', width: '300px' }}>
-                        <FontAwesomeIcon icon={faPlus} size="6x" color="#00000088" />
-                    </button>
+                    {boards
+                        ?.filter((board) => board.name.toLowerCase().includes(query.toLowerCase()))
+                        ?.map((board) => (
+                            <BoardComponent key={board.id} id={board.id} title={board.name} issues={board.issues ?? []} />
+                        ))}
+
+                    {!query && (
+                        <button onClick={addBoard} className="m-3 flex w-full items-center justify-center rounded-lg bg-white/30 p-2 opacity-70 shadow-md transition-all duration-200 ease-in-out hover:scale-105 hover:opacity-100 hover:shadow-lg" style={{ minHeight: '200px', width: '300px' }}>
+                            <FontAwesomeIcon icon={faPlus} size="6x" color="#00000088" />
+                        </button>
+                    )}
                 </div>
             </div>
         </>
