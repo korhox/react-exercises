@@ -9,8 +9,9 @@ export interface Project {
     };
 }
 export interface Board {
-    name: string;
     id: string;
+    name: string;
+    order: number;
     projectId: string;
     issues: Issue[];
 }
