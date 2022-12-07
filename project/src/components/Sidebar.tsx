@@ -8,6 +8,7 @@ import { faInfo } from '@fortawesome/free-solid-svg-icons/faInfo';
 import { faHouse } from '@fortawesome/free-solid-svg-icons/faHouse';
 import { insertAPI, useProjects } from '../util/fetchers';
 import { useSWRConfig } from 'swr';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
     const { projects, isLoading, isError } = useProjects();
@@ -21,7 +22,9 @@ const Sidebar = () => {
     return isError ? (
         <p>An unexpected error occurred.</p>
     ) : isLoading ? (
-        <p>Loading...</p>
+        <div className="flex h-full w-20 items-center justify-center">
+            <FontAwesomeIcon icon={faCircleNotch} spin size="2x" color="#541F87" />
+        </div>
     ) : (
         <header className="relative z-10 bg-white/30 pt-2 text-white backdrop-blur" style={{ height: '100%', boxShadow: '0 0 20px #0002' }}>
             <nav className="container mx-auto flex flex-col items-center justify-between" style={{ height: '100%' }}>

@@ -2,13 +2,14 @@ import BoardComponent from '../components/BoardComponent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { useNavigate, useParams } from 'react-router-dom';
-import { updateAPI, useBoards, useProjects, deleteProject, insertAPI } from '../util/fetchers';
-import { useCallback, useEffect, useState } from 'react';
+import { updateAPI, useBoards, useProjects, deleteProject, insertAPI, updateBoardOrder } from '../util/fetchers';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { DebounceInput } from 'react-debounce-input';
 import { capitalizeWord } from '../util/utils';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+import { ErrorComponent } from '../components/ErrorComponent';
 
 const Project = () => {
     const params = useParams<{ id: string }>();
@@ -22,6 +23,8 @@ const Project = () => {
     }, [mutate, params.id]);
 
     document.body.style.background = curProject?.settings?.background ?? 'rgb(244, 230, 243)';
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundAttachment = 'fixed';
 
     const changeProjectName = useCallback(
         async (name: string) => {
@@ -41,27 +44,56 @@ const Project = () => {
 
     const addBoard = useCallback(async () => {
         const largest = boards?.length ?? 0;
-        const tmpBoard = { name: `Board ${largest + 1}`, id: largest + 1 };
-        mutate('/boards/', [...(boards ?? []), await insertAPI('/boards', { name: `Board ${largest + 1}`, projectId: params.id ?? '' })], { optimisticData: [...(boards ?? []), tmpBoard] });
+        const tmpBoard = { name: `Board ${largest + 1}`, id: largest + 1, order: largest };
+        mutate('/boards/', [...(boards ?? []), await insertAPI('/boards', { name: `Board ${largest + 1}`, projectId: params.id ?? '', order: largest })], { optimisticData: [...(boards ?? []), tmpBoard] });
     }, [boards, mutate, params.id]);
+
+    const project = useRef<HTMLDivElement>(null);
+    const moveBoard = useCallback(
+        async (e: React.DragEvent<HTMLDivElement>) => {
+            const [event, boardId] = e.dataTransfer.getData('text/plain').split('-');
+            if (event !== 'board') return;
+            let position = null;
+            let distance = Infinity;
+            project.current?.childNodes.forEach((child) => {
+                if (!(child instanceof HTMLElement)) return;
+                if (!child.id.includes('board-')) return;
+                const rect = child.getClientRects()[0];
+                const fromLeft = Math.abs(e.clientX - rect.left);
+                const fromRight = Math.abs(e.clientX - rect.right);
+                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                fromRight > fromLeft && fromLeft < distance && ((distance = fromLeft), (position = parseInt(child.getAttribute('data-order') ?? '0')));
+                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                fromLeft > fromRight && fromRight < distance && ((distance = fromRight), (position = parseInt(child.getAttribute('data-order') ?? '0') + 1));
+            });
+            if (position === null) return;
+            await updateBoardOrder(params.id ?? '', boardId, position);
+            mutate('/boards/');
+        },
+        [mutate, params.id]
+    );
 
     const [query, setQuery] = useState('');
 
     return isError ? (
-        <p>An unexpected error occurred.</p>
+        <ErrorComponent />
     ) : isLoading ? (
-        <p>Loading...</p>
+        <div className="flex h-full w-full items-center justify-center">
+            <FontAwesomeIcon icon={faCircleNotch} spin size="4x" color="#541F87" />
+        </div>
     ) : (
         <>
-            <div className="w-full">
+            <div onDrop={moveBoard} onDragOver={(e) => e.preventDefault()} className="w-full">
                 <div className="flex w-full justify-between p-5 pb-1">
                     <div className="flex items-center">
-                        <DebounceInput onChange={(e) => changeProjectName(e.target.value)} forceNotifyOnBlur debounceTimeout={500} minLength={2} value={capitalizeWord(curProject?.name ?? 'Unknown')} className="w-auto rounded-lg border-0 bg-transparent py-2 px-3 text-2xl font-medium text-white text-shadow-lg" />
-                        <div className="group relative ml-2 flex flex-col items-center px-5 py-2">
+                        <div>
+                            <DebounceInput onChange={(e) => changeProjectName(e.target.value)} forceNotifyOnBlur debounceTimeout={500} minLength={2} value={capitalizeWord(curProject?.name ?? 'Unknown')} className="w-full max-w-full border-0 border-b-2 border-white/50 bg-transparent py-1 px-2 text-2xl font-medium text-white text-shadow-lg" style={{ maxWidth: '300px' }} />
+                        </div>
+                        <div className="group relative ml-2 flex flex-col items-center px-3 py-2">
                             <FontAwesomeIcon icon={faTrash} className="text-2xl text-white" />
                             <div className="group absolute top-0 mt-8 hidden flex-col items-center group-hover:flex">
-                                <div className="-mb-2 h-3 w-3 rotate-45 rounded bg-white"></div>
-                                <span className="whitespace-no-wrap relative z-10 rounded bg-white p-3 text-xs leading-none text-black shadow" style={{ width: '250px' }}>
+                                <div className="z-20 -mb-2 h-3 w-3 rotate-45 rounded bg-white"></div>
+                                <span className="whitespace-no-wrap relative z-10 rounded bg-white p-3 text-xs leading-none text-black shadow" style={{ width: '250px', filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.2))' }}>
                                     <strong>Permanently Remove the Project?</strong>
                                     <br />
                                     All the boards and issues attached to the project will be permanently removed.
@@ -71,9 +103,9 @@ const Project = () => {
                                 </span>
                             </div>
                         </div>
-                        <div className="group relative ml-2 flex flex-row items-center px-5 py-2">
-                            <FontAwesomeIcon icon={faSearch} className="text-2xl text-white" />
-                            <DebounceInput onChange={(e) => setQuery(e.target.value)} debounceTimeout={300} className="bg-white" style={{ width: '250px' }} />
+                        <div className="group relative ml-2 flex flex-row items-center px-3 py-2">
+                            <FontAwesomeIcon icon={faSearch} fixedWidth className="text-2xl text-white" style={{ filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.2))' }} />
+                            <DebounceInput onChange={(e) => setQuery(e.target.value)} debounceTimeout={300} className={`ml-5 w-0 rounded border-0 bg-white/80 opacity-0 shadow transition-all group-hover:w-full group-hover:opacity-100`} style={{ maxWidth: '250px' }} />
                         </div>
                     </div>
                     <div>
@@ -86,15 +118,15 @@ const Project = () => {
                         </button>
                     </div>
                 </div>
-                <div className="flex items-start justify-center overflow-x-auto p-3">
+                <div ref={project} className="flex items-start justify-center overflow-x-auto p-3">
                     {boards
                         ?.filter((board) => board.name.toLowerCase().includes(query.toLowerCase()))
                         ?.map((board) => (
-                            <BoardComponent key={board.id} id={board.id} title={board.name} issues={board.issues ?? []} />
+                            <BoardComponent key={board.id} id={board.id} title={board.name} issues={board.issues ?? []} order={board.order} />
                         ))}
 
                     {!query && (
-                        <button onClick={addBoard} className="m-3 flex w-full items-center justify-center rounded-lg bg-white/30 p-2 opacity-70 shadow-md transition-all duration-200 ease-in-out hover:scale-105 hover:opacity-100 hover:shadow-lg" style={{ minHeight: '200px', width: '300px' }}>
+                        <button aria-label="Create Board" tabIndex={-1} onClick={addBoard} className="m-3 flex w-full items-center justify-center rounded-lg bg-white/30 p-2 opacity-70 shadow-md transition-all duration-200 ease-in-out hover:scale-105 hover:opacity-100 hover:shadow-lg" style={{ minHeight: '200px', width: '300px' }}>
                             <FontAwesomeIcon icon={faPlus} size="6x" color="#00000088" />
                         </button>
                     )}

@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons/faGithub';
 import { FC } from 'react';
 import ButtonComponent from '../components/ButtonComponent';
+import Footer from '../components/Footer';
 
 const About = () => {
     document.body.style.background = 'rgb(244, 230, 243)';
@@ -36,6 +37,10 @@ const About = () => {
                 </div>
             </div>
             <div className="container mx-auto mt-20 p-2 py-20">
+                <h3 className="mb-10 text-5xl">The Project Team</h3>
+                <p className="mb-5 text-xl">Currently, only Juuso Korhonen. Hopefully soon more! ❤️</p>
+            </div>
+            <div className="container mx-auto mt-20 p-2 py-20">
                 <h3 className="mb-10 text-5xl">Built with</h3>
                 <p className="mb-5 text-xl">The project utilizes a variety of different public, Open Source libraries to ease development process.</p>
                 <ul className="flex flex-wrap text-2xl">
@@ -48,11 +53,13 @@ const About = () => {
             </div>
             <div className="container mx-auto mt-20 p-2 py-20">
                 <h3 className="mb-10 text-5xl">Other assets used</h3>
-                <p className="mb-5 text-xl">We don't like to miss anything from being credited. Thank you for these asset creators as well.</p>
+                <p className="mb-5 text-xl">We don't like to miss anything from being credited. Thank you for these asset creators as well!</p>
                 <ul className="flex flex-wrap text-2xl">
-                    <ListItem to="https://fonts.google.com/specimen/Lobster?preview.text=eezeePlan&preview.size=79&preview.text_type=custom" name="Lobster" />
+                    <ListItem to="https://fonts.google.com/specimen/Lobster" name="Lobster (Google Fonts)" />
+                    <ListItem to="https://fonts.google.com/specimen/Ubuntu" name="Ubuntu (Google Fonts)" />
                 </ul>
             </div>
+            <Footer />
         </>
     );
 };
@@ -67,14 +74,23 @@ const DepedencyList: Depedencies = {
     '@types/node': '^16.18.3',
     '@types/react': '^18.0.25',
     '@types/react-dom': '^18.0.9',
+    'normalize.css': '^8.0.1',
     react: '^18.2.0',
+    'react-debounce-input': '^3.3.0',
     'react-dom': '^18.2.0',
     'react-scripts': '5.0.1',
+    swr: '^1.3.0',
+    'tailwindcss-textshadow': '^2.1.3',
     typescript: '^4.9.3',
     uuid: '^9.0.0',
+    '@tailwindcss/forms': '^0.5.3',
+    '@tailwindcss/typography': '^0.5.8',
     '@types/react-router-dom': '^5.3.3',
+    '@types/uuid': '^8.3.4',
     autoprefixer: '^10.4.13',
     postcss: '^8.4.19',
+    prettier: '^2.8.0',
+    'prettier-plugin-tailwindcss': '^0.2.0',
     'react-router-dom': '^6.4.3',
     tailwindcss: '^3.2.4',
 };

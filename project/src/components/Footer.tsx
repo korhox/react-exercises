@@ -1,6 +1,6 @@
 const Footer = () => (
-    <div className="flex mx-auto px-2 py-3 mt-10 opacity-30 text-sm">
-        <p>Copyright &copy; Juuso Korhonen | All rights reserved</p>
+    <div className="container mx-auto mt-10 flex px-2 py-3 text-sm opacity-30">
+        <p>MIT Licensed | Copyright &copy; 2022 Juuso Korhonen & contributors</p>
     </div>
 );
 
