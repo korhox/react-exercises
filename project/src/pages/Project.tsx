@@ -136,7 +136,7 @@ const Project = () => {
                         </button>
                     </div>
                 </div>
-                <div className="ml-32 w-[500px] flex-1 overflow-x-scroll">
+                <div className="flex-1 overflow-x-scroll">
                     <div ref={project} onDrop={moveBoard} onDragOver={(e) => e.preventDefault()} className="flex items-start justify-center p-3">
                         {boards
                             ?.filter((board) => board.name.toLowerCase().includes(query.toLowerCase()))
