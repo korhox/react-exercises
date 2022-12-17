@@ -12,12 +12,10 @@ const App = () => {
     const modal = useModal();
     return (
         <modalContext.Provider value={modal}>
-            <div id="App" className="flex flex-col bg-bg bg-cover bg-fixed bg-center backdrop-blur-sm backdrop-opacity-50">
+            <div id="App" className="bg-bg flex flex-col bg-cover bg-fixed bg-center backdrop-blur-sm backdrop-opacity-50">
                 <BrowserRouter>
                     <main className="flex flex-1">
-                        <div>
-                            <Sidebar />
-                        </div>
+                        <Sidebar />
                         <div className="max-h-screen w-full overflow-y-auto">
                             <Routes>
                                 <Route index element={<Index />} />

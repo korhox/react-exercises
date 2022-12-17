@@ -5,7 +5,7 @@ import { Issue, updateAPI } from '../util/fetchers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAlignLeft, faArchive, faClock, faRectangleList, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faPlay } from '@fortawesome/free-solid-svg-icons/faPlay';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
 const EditIssue: FC<{ issue: Issue }> = ({ issue }) => {

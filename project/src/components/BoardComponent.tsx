@@ -59,7 +59,7 @@ const BoardComponent: FC<{ id: string; title: string; issues: Issue[]; order: nu
     );
 
     return (
-        <div draggable onDragStart={(e) => e.dataTransfer.setData('text/plain', `board-${id}`)} data-order={order} ref={board} id={'board-' + id} onDrop={moveIssue} onDragOver={(e) => e.preventDefault()} className="m-3 w-[300px] snap-start rounded-lg bg-white/60 p-2 pb-0 shadow-md backdrop-blur">
+        <div draggable onDragStart={(e) => e.dataTransfer.setData('text/plain', `board-${id}`)} data-order={order} ref={board} id={'board-' + id} onDrop={moveIssue} onDragOver={(e) => e.preventDefault()} className="m-3 w-[300px] rounded-lg bg-white/60 p-2 pb-0 shadow-md backdrop-blur">
             <div className="mb-2 flex w-full">
                 <DebounceInput onChange={(e) => changeBoardName(e.target.value)} forceNotifyOnBlur debounceTimeout={500} minLength={2} value={capitalizeWord(title)} className="f-full mb-0 flex-1 rounded border-0 bg-transparent p-1 px-2 uppercase transition-all text-shadow hover:cursor-text hover:bg-white/50 focus:scale-[103%] focus:bg-white focus:drop-shadow-xl" />
                 <button aria-label="Delete Board" tabIndex={-1} onClick={deleteBoard} className="py-1 px-2 opacity-70 transition-opacity hover:opacity-100">

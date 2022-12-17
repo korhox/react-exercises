@@ -87,68 +87,64 @@ const Project = () => {
         </div>
     ) : (
         <>
-            <div className="flex w-full justify-between p-5 pb-1">
-                <div className="flex items-center">
+            <div className="flex h-full w-full flex-col">
+                <div className="flex w-full justify-between p-5 pb-1">
+                    <div className="flex items-center">
+                        <div>
+                            <DebounceInput onChange={(e) => changeProjectName(e.target.value)} forceNotifyOnBlur debounceTimeout={500} minLength={2} value={capitalizeWord(curProject?.name ?? 'Unknown')} className="w-full max-w-full border-0 border-b-2 border-white/50 bg-transparent py-1 px-2 text-2xl font-medium text-white text-shadow-lg" style={{ maxWidth: '300px' }} />
+                        </div>
+                        <div className="group relative ml-2 flex flex-col items-center px-3 py-2">
+                            <FontAwesomeIcon onClick={() => modal.setContent(<ProjectSummary project={curProject} />)} icon={faChartLine} fixedWidth className="text-2xl text-white opacity-80 transition-opacity group-hover:opacity-100" style={{ filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.2))' }} />
+                            <div className="group absolute top-0 mt-8 hidden flex-col items-center group-hover:flex">
+                                <div className="z-20 -mb-2 h-3 w-3 rotate-45 rounded bg-white"></div>
+                                <span className="whitespace-no-wrap relative z-10 w-auto rounded bg-white p-3 text-xs text-black shadow" style={{ inlineSize: 'max-width', maxWidth: '250px', filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.2))' }}>
+                                    <strong>Summary</strong>
+                                </span>
+                            </div>
+                        </div>
+                        <div className="group relative ml-2 flex flex-col items-center px-3 py-2">
+                            <FontAwesomeIcon onClick={() => modal.setContent(<ProjectSettings project={curProject} />)} icon={faCog} fixedWidth className="text-2xl text-white opacity-80 transition-opacity group-hover:opacity-100" style={{ filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.2))' }} />
+                            <div className="group absolute top-0 mt-8 hidden flex-col items-center group-hover:flex">
+                                <div className="z-20 -mb-2 h-3 w-3 rotate-45 rounded bg-white"></div>
+                                <span className="whitespace-no-wrap relative z-10 w-auto rounded bg-white p-3 text-xs text-black shadow" style={{ inlineSize: 'max-width', maxWidth: '250px', filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.2))' }}>
+                                    <strong>Project settings</strong>
+                                </span>
+                            </div>
+                        </div>
+                        <div className="group relative ml-2 flex flex-col items-center px-3 py-2">
+                            <FontAwesomeIcon icon={faTrash} className="text-2xl text-white opacity-80 transition-opacity group-hover:opacity-100" />
+                            <div className="group absolute top-0 mt-8 hidden flex-col items-center group-hover:flex">
+                                <div className="z-20 -mb-2 h-3 w-3 rotate-45 rounded bg-white"></div>
+                                <span className="whitespace-no-wrap relative z-10 rounded bg-white p-3 text-xs text-black shadow" style={{ inlineSize: 'max-width', minWidth: '250px', filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.2))' }}>
+                                    <strong className="block">Permanently Remove the Project?</strong>
+                                    All the boards and issues attached to the project will be permanently removed.
+                                    <button onClick={delProject} className="mt-2 rounded bg-red-800 py-1 px-2 text-white">
+                                        Delete
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div className="group relative ml-2 flex flex-row items-center px-3 py-2">
+                            <FontAwesomeIcon icon={faSearch} fixedWidth className="text-2xl text-white opacity-80 transition-opacity group-hover:opacity-100" style={{ filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.2))' }} />
+                            <DebounceInput onChange={(e) => setQuery(e.target.value)} debounceTimeout={300} placeholder="Filter boards..." className={`ml-5 w-0 rounded border-0 bg-white/80 opacity-0 shadow transition-all group-hover:w-full group-hover:opacity-100`} style={{ maxWidth: '250px' }} />
+                        </div>
+                    </div>
                     <div>
-                        <DebounceInput onChange={(e) => changeProjectName(e.target.value)} forceNotifyOnBlur debounceTimeout={500} minLength={2} value={capitalizeWord(curProject?.name ?? 'Unknown')} className="w-full max-w-full border-0 border-b-2 border-white/50 bg-transparent py-1 px-2 text-2xl font-medium text-white text-shadow-lg" style={{ maxWidth: '300px' }} />
-                    </div>
-                    <div className="group relative ml-2 flex flex-col items-center px-3 py-2">
-                        <FontAwesomeIcon onClick={() => modal.setContent(<ProjectSummary project={curProject} />)} icon={faChartLine} fixedWidth className="text-2xl text-white opacity-80 transition-opacity group-hover:opacity-100" style={{ filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.2))' }} />
-                        <div className="group absolute top-0 mt-8 hidden flex-col items-center group-hover:flex">
-                            <div className="z-20 -mb-2 h-3 w-3 rotate-45 rounded bg-white"></div>
-                            <span className="whitespace-no-wrap relative z-10 w-auto rounded bg-white p-3 text-xs text-black shadow" style={{ inlineSize: 'max-width', maxWidth: '250px', filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.2))' }}>
-                                <strong>Summary</strong>
-                            </span>
-                        </div>
-                    </div>
-                    <div className="group relative ml-2 flex flex-col items-center px-3 py-2">
-                        <FontAwesomeIcon onClick={() => modal.setContent(<ProjectSettings project={curProject} />)} icon={faCog} fixedWidth className="text-2xl text-white opacity-80 transition-opacity group-hover:opacity-100" style={{ filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.2))' }} />
-                        <div className="group absolute top-0 mt-8 hidden flex-col items-center group-hover:flex">
-                            <div className="z-20 -mb-2 h-3 w-3 rotate-45 rounded bg-white"></div>
-                            <span className="whitespace-no-wrap relative z-10 w-auto rounded bg-white p-3 text-xs text-black shadow" style={{ inlineSize: 'max-width', maxWidth: '250px', filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.2))' }}>
-                                <strong>Project settings</strong>
-                            </span>
-                        </div>
-                    </div>
-                    <div className="group relative ml-2 flex flex-col items-center px-3 py-2">
-                        <FontAwesomeIcon icon={faTrash} className="text-2xl text-white opacity-80 transition-opacity group-hover:opacity-100" />
-                        <div className="group absolute top-0 mt-8 hidden flex-col items-center group-hover:flex">
-                            <div className="z-20 -mb-2 h-3 w-3 rotate-45 rounded bg-white"></div>
-                            <span className="whitespace-no-wrap relative z-10 rounded bg-white p-3 text-xs text-black shadow" style={{ inlineSize: 'max-width', minWidth: '250px', filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.2))' }}>
-                                <strong className="block">Permanently Remove the Project?</strong>
-                                All the boards and issues attached to the project will be permanently removed.
-                                <button onClick={delProject} className="mt-2 rounded bg-red-800 py-1 px-2 text-white">
-                                    Delete
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                    <div className="group relative ml-2 flex flex-row items-center px-3 py-2">
-                        <FontAwesomeIcon icon={faSearch} fixedWidth className="text-2xl text-white opacity-80 transition-opacity group-hover:opacity-100" style={{ filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.2))' }} />
-                        <DebounceInput onChange={(e) => setQuery(e.target.value)} debounceTimeout={300} placeholder="Filter boards..." className={`ml-5 w-0 rounded border-0 bg-white/80 opacity-0 shadow transition-all group-hover:w-full group-hover:opacity-100`} style={{ maxWidth: '250px' }} />
-                    </div>
-                </div>
-                <div>
-                    <button onClick={addBoard} className="flex items-center rounded-lg bg-viol p-2 px-4 text-white shadow-md transition-all duration-200 ease-in-out hover:scale-105 hover:shadow-lg hover:contrast-150">
-                        <FontAwesomeIcon icon={faPlus} color="#fff" className="pr-2" />
-                        <span>New Board</span>
-                    </button>
-                </div>
-            </div>
-            <div ref={project} onDrop={moveBoard} onDragOver={(e) => e.preventDefault()} className="flex w-full snap-x snap-mandatory items-start justify-center overflow-x-scroll p-3">
-                {boards
-                    ?.filter((board) => board.name.toLowerCase().includes(query.toLowerCase()))
-                    ?.map((board) => (
-                        <BoardComponent key={board.id} id={board.id} title={board.name} issues={board.issues ?? []} order={board.order} />
-                    ))}
-
-                {/* Breaks the width of the board container
-                    {!query && (
-                        <button aria-label="Create Board" tabIndex={-1} onClick={addBoard} className="m-3 flex w-[300px] items-center justify-center rounded-lg bg-white/30 p-2 opacity-70 shadow-md transition-all duration-200 ease-in-out hover:scale-105 hover:opacity-100 hover:shadow-lg">
-                            <FontAwesomeIcon icon={faPlus} size="6x" color="#00000088" />
+                        <button onClick={addBoard} className="flex items-center rounded-lg bg-viol p-2 px-4 text-white shadow-md transition-all duration-200 ease-in-out hover:scale-105 hover:shadow-lg hover:contrast-150">
+                            <FontAwesomeIcon icon={faPlus} color="#fff" className="pr-2" />
+                            <span>New Board</span>
                         </button>
-                    )}
-                */}
+                    </div>
+                </div>
+                <div className="ml-32 w-[500px] flex-1 overflow-x-scroll">
+                    <div ref={project} onDrop={moveBoard} onDragOver={(e) => e.preventDefault()} className="flex items-start justify-center p-3">
+                        {boards
+                            ?.filter((board) => board.name.toLowerCase().includes(query.toLowerCase()))
+                            ?.map((board) => (
+                                <BoardComponent key={board.id} id={board.id} title={board.name} issues={board.issues ?? []} order={board.order} />
+                            ))}
+                    </div>
+                </div>
             </div>
         </>
     );

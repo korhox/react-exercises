@@ -28,14 +28,14 @@ const Sidebar = () => {
     ) : (
         <header className="relative z-10 bg-white/30 pt-2 text-white backdrop-blur" style={{ height: '100%', boxShadow: '0 0 20px #0002' }}>
             <nav className="container mx-auto flex flex-col items-center justify-between" style={{ height: '100%' }}>
-                <div>
+                <div className="h-[200px] overflow-y-auto">
                     <LinkContainer to="/" label="Home" icon={faHouse} />
                     {projects?.map((project) => (
                         <ProjectContainer key={project.id} to={`/project/${project.id}`} label={project.name} />
                     ))}
                     <ButtonContainer action={addProject} label="Create a New Project" icon={faPlus} />
                 </div>
-                <div>
+                <div className="h-auto">
                     <LinkContainer to="/settings" label="Settings" icon={faGear} />
                     <LinkContainer to="/about" label="About" icon={faInfo} />
                 </div>
