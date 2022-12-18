@@ -153,29 +153,34 @@ interface BoardSummary {
     issues: {
         issueId: string;
         time: number;
+        timestamps: Timestamp[];
     }[];
 }
 const fetchProjectTimes = async (projectId: string) => {
     const boards = await fetcher<Board[]>(`/boards?projectId=${projectId}&_embed=issues`);
     const summary: BoardSummary[] = [];
-    boards.forEach(async (board) => {
-        const issues = board.issues ?? [];
-        let total = 0;
-        const issueTimestamps: { issueId: string; time: number }[] = [];
-        (
-            await Promise.all(
-                issues.map(async (issue) => {
-                    const timestamps = (await fetcher<Timestamp[]>(`/timestamps?issueId=${issue.id}`)) ?? [];
-                    const time = timestamps.reduce((acc, timestamp) => acc + ((timestamp.endTime === 'null' ? new Date() : new Date(timestamp.endTime)).getTime() - new Date(timestamp.startTime).getTime()) / 1000 / 60, 0);
-                    return { issueId: issue.id, time };
-                })
-            )
-        ).forEach(({ issueId, time }) => {
-            issueTimestamps.push({ issueId, time });
-            total += time;
-        });
-        summary.push({ boardId: board.id, total, issues: [...issueTimestamps] });
-    });
+    await Promise.all(
+        boards.map(async (board) => {
+            const issues = board.issues ?? [];
+            let total = 0;
+            const issueTimestamps: { issueId: string; time: number; timestamps: Timestamp[] }[] = [];
+            (
+                await Promise.allSettled(
+                    issues.map(async (issue) => {
+                        const timestamps = (await fetcher<Timestamp[]>(`/timestamps?issueId=${issue.id}`)) ?? [];
+                        const time = timestamps.reduce((acc, timestamp) => acc + ((timestamp.endTime === 'null' ? new Date() : new Date(timestamp.endTime)).getTime() - new Date(timestamp.startTime).getTime()) / 1000 / 60, 0);
+                        return { issueId: issue.id, time, timestamps };
+                    })
+                )
+            ).forEach((result) => {
+                const { issueId, time, timestamps } = result.status === 'fulfilled' ? result.value : { issueId: '', time: 0, timestamps: [] };
+                issueTimestamps.push({ issueId, time, timestamps });
+                total += time;
+            });
+            summary.push({ boardId: board.id, total, issues: [...issueTimestamps] });
+        })
+    );
+    console.log(summary);
     return summary;
 };
 

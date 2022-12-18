@@ -19,7 +19,7 @@ const EditIssue: FC<{ issue: Issue }> = ({ issue }) => {
         return Math.floor(Math.random() * (max - min + 1) + min);
     };
 
-    const { times, isLoading, isError } = useTimes(issue.id);
+    // const { times, isLoading, isError } = useTimes(issue.id);
 
     ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
     const options = {

@@ -44,6 +44,13 @@ const IssueComponent: FC<{ issue: Issue }> = ({ issue }) => {
             >
                 <DebounceInput onChange={(e) => updateIssue({ title: e.target.value })} forceNotifyOnBlur debounceTimeout={500} className="focus:box-shadow group w-full rounded border-0 bg-transparent transition-all focus:scale-[103%] focus:bg-white" value={issue.title} />
 
+                <div className="absolute top-0 bottom-0 right-0 flex justify-end rounded bg-gradient-to-l from-white/90 via-white/90 to-transparent pr-1 pl-20 align-middle opacity-100 transition-opacity group-hover:opacity-0">
+                    {issue.status === IssueStatus.Active && (
+                        <button aria-label="Pause" onClick={pauseIssue} tabIndex={-1} className="p-1 opacity-70 contrast-50 drop-shadow-sm transition-all duration-200 ease-in-out hover:scale-125 hover:text-green-500 hover:opacity-100">
+                            <FontAwesomeIcon icon={faPause} size="lg" fixedWidth={true} />
+                        </button>
+                    )}
+                </div>
                 <div className="absolute top-0 bottom-0 right-0 flex justify-end rounded bg-gradient-to-l from-white/90 via-white/90 to-transparent pr-1 pl-20 align-middle opacity-0 transition-opacity group-hover:opacity-100">
                     <button aria-label="View / Edit" tabIndex={-1} onClick={() => modal.setContent(<EditIssue issue={issue} />)} className="p-1 opacity-70 contrast-75 drop-shadow-sm transition-all duration-200 ease-in-out hover:scale-125 hover:text-blue-500 hover:opacity-100">
                         <FontAwesomeIcon icon={faEye} size="lg" fixedWidth={true} />
