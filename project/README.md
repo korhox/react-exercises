@@ -21,12 +21,19 @@ We agreed with the teacher that it is all right to use Kanban style boards and i
 
 <br>
 
+# Known bugs
+- Some times json-server crashes when doing actions too fast. This is a known bug and it is not a problem with the project itself, but an issue with backend.
+
+<br>
+
 # In progress
 The project has some in progress parts. This includes but does not limit to:
 - Summary view of the project
 - Project settings
 - App settings
 - Issue timing summary
+- Issue Archiving
+- Buttons on issue edit view
 
 <br>
 
