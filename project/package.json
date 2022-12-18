@@ -24,7 +24,7 @@
         "uuid": "^9.0.0"
     },
     "scripts": {
-        "dev": "react-scripts start",
+        "dev": "npm i && react-scripts start",
         "db": "npx json-server -H localhost -p 3010 -w ./db.json",
         "build": "react-scripts build",
         "eject": "react-scripts eject"
